@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.alumnositm.todo.dtos.request.CreateTodoRequest;
 import com.alumnositm.todo.entities.TodoEntity;
+import com.alumnositm.todo.helpers.TodoStatus;
 import com.alumnositm.todo.repositorys.TodoRepository;
 import com.alumnositm.todo.services.TodoServices;
 
@@ -26,6 +28,22 @@ public class TodoServicesImpl implements TodoServices {
         // );
        List<TodoEntity> todos  = todoRepository.findAll();
         return todos;
+    }
+
+    @Override
+    public TodoEntity createTodo(CreateTodoRequest createTodoRequest) {
+    //    TodoEntity entity= TodoEntity.builder()
+    //    .title(createTodoRequest.getTitle())
+    //    .description(createTodoRequest.getDescription())
+    //    .status(TodoStatus.PENDING)
+    //    .build();
+
+    TodoEntity entity = new TodoEntity();
+    entity.setTitle(createTodoRequest.getTitle());
+    entity.setDescription(createTodoRequest.getDescription());
+    entity.setStatus(TodoStatus.PENDING);
+
+       return todoRepository.save(entity);
     }
 
 

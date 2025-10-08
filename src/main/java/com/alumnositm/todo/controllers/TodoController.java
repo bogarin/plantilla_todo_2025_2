@@ -18,6 +18,7 @@ import com.alumnositm.todo.dtos.request.CreateTodoRequest;
 import com.alumnositm.todo.entities.TodoEntity;
 import com.alumnositm.todo.services.TodoServices;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -52,7 +53,7 @@ public class TodoController {
     
 
     @PostMapping()
-    public ResponseEntity<TodoEntity> createTodo(@RequestBody CreateTodoRequest createTodoRequest) {
+    public ResponseEntity<TodoEntity> createTodo(@RequestBody @Valid CreateTodoRequest createTodoRequest) {
         TodoEntity saved = todoServices.createTodo(createTodoRequest);
 
         URI location = ServletUriComponentsBuilder

@@ -1,0 +1,107 @@
+version: '3.9'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:17.4-alpine
+    container_name: todo-postgres-db
+    environment:
+      POSTGRES_USER: todo_user
+      POSTGRES_PASSWORD: todo_password
+      POSTGRES_DB: todo_db_v2
+      # Configuración adicional para PostgreSQL
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+      TZ: America/Mexico_City
+    # ports:
+    #   - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - todo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U todo_user -d todo_db_v2"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Aplicación Spring Boot
+  todo-back-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: todo-back-app:latest
+    container_name: todo-backend
+    environment:
+      # Configuración de base de datos
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/todo_db_v2
+      SPRING_DATASOURCE_USERNAME: todo_user
+      SPRING_DATASOURCE_PASSWORD: todo_password
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      
+      # Configuración de JPA/Hibernate
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_JPA_PROPERTIES_HIBERNATE_FORMAT_SQL: true
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      
+      # Configuración del servidor
+      SERVER_PORT: 8080
+      
+      # Configuración de CORS
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173,http://localhost:4200
+      
+      # Optimización de JVM para contenedor
+      JAVA_OPTS: >-
+        -XX:+UseContainerSupport
+        -XX:MaxRAMPercentage=75.0
+        -XX:InitialRAMPercentage=50.0
+        -Djava.security.egd=file:/dev/./urandom
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - todo-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # PgAdmin para administración de base de datos
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: todo-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: 'False'
+    ports:
+      - "8082:80"
+    depends_on:
+      - postgres
+    networks:
+      - todo-network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    restart: unless-stopped
+
+# Redes
+networks:
+  todo-network:
+    driver: bridge
+    name: todo-network
+
+# Volúmenes
+volumes:
+  postgres-data:
+    driver: local
+    name: todo-postgres-data
+  pgadmin-data:
+    driver: local
+    name: todo-pgadmin-data

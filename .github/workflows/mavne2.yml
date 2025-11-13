@@ -12,13 +12,13 @@ jobs:
 
         steps:
             - name: Checkout código
-                uses: actions/checkout@v4
+              uses: actions/checkout@v4
 
             - name: Mostrar información del tag (debug)
               run: |
-                    echo "GITHUB_REF: $GITHUB_REF"
-                    echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
-                    echo "GITHUB_SHA: $GITHUB_SHA"
+                  echo "GITHUB_REF: $GITHUB_REF"
+                  echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
+                  echo "GITHUB_SHA: $GITHUB_SHA"
 
             - name: Set up JDK 21
               uses: actions/setup-java@v4

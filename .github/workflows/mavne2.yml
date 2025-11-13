@@ -33,3 +33,14 @@ jobs:
                     -t todo-back-todo:${{ github.ref_name }} \
                     -t todo-back-todo:latest \
                     --load .
+            - name: Save Docker image
+              run: |
+                  docker save -o todo.tar todo-back-todo:${{ github.ref_name }}
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: todo.tar
+                  body: "Release of version ${{ github.ref_name }}"
+                  draft: false
+                  prerelease: false

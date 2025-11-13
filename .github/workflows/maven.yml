@@ -15,13 +15,11 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
     - name: empaque proyecto java
-      
+    - uses: actions/checkout@v3  
 
     - name: Extract tag name
       id: extract_tag

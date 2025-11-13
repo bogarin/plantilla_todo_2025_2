@@ -1,6 +1,13 @@
 # This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
 
+# Documentación de variables de entorno y contexto de GitHub Actions:
+# - GitHub context (github.ref, github.ref_name, etc.): https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
+# - Variables de entorno por defecto: https://docs.github.com/en/actions/learn-github-actions/variables#default-environment-variables
+# - Guía general de variables: https://docs.github.com/en/actions/learn-github-actions/variables
+# - Sintaxis de expresiones: https://docs.github.com/en/actions/learn-github-actions/expressions
+# - Eventos que disparan workflows: https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
+
 name: Java CI with Maven
 
 on:

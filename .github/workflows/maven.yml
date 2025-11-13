@@ -19,16 +19,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - name: empaque  proyecto java
+    - uses: actions/checkout@v4
+    - name: empaque proyecto java
       
 
-      - name: Extract tag name
-        id: extract_tag
-        run: |
-            TAG_NAME=${GITHUB_REF#refs/tags/}
-            echo "extraer el nombre del tag: $TAG_NAME"
-            echo "tag_name=$TAG_NAME">>$GITHUB_OUTPUT
+    - name: Extract tag name
+      id: extract_tag
+      run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "extraer el nombre del tag: $TAG_NAME"
+          echo "tag_name=$TAG_NAME">>$GITHUB_OUTPUT
 
       
     

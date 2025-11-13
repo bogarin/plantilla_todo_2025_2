@@ -28,6 +28,7 @@ jobs:
           echo "extraer el nombre del tag: $TAG_NAME"
           echo "tag_name=$TAG_NAME">>$GITHUB_OUTPUT
 
+
       
     
    

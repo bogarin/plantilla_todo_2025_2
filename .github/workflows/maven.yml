@@ -18,15 +18,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: empaque proyecto java
-      uses: actions/checkout@v3  
-
-    - name: Extract tag name
-      id: extract_tag
-      run: |
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          echo "extraer el nombre del tag: $TAG_NAME"
-          echo "tag_name=$TAG_NAME">>$GITHUB_OUTPUT
+      - name: empaque proyecto java
+        uses: actions/checkout@v3  
+  
+      - name: Extract tag name
+        id: extract_tag
+        run: |
+            TAG_NAME=${GITHUB_REF#refs/tags/}
+            echo "extraer el nombre del tag: $TAG_NAME"
+            echo "tag_name=$TAG_NAME" >> $GITHUB_OUTPUT
+      
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
 
 
       

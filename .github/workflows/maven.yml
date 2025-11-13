@@ -19,8 +19,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: empaque  proyecto java
       - uses: actions/checkout@v4
+      - name: empaque  proyecto java
+      
 
       - name: Extract tag name
         id: extract_tag

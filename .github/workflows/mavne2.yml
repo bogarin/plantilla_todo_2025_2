@@ -42,7 +42,7 @@ jobs:
             - name: Create Release
               uses: softprops/action-gh-release@v2
               with:
-                  files: todo.tar
+                  files: "todo.tar,target/*.jar"
                   body: "Release of version ${{ github.ref_name }}"
                   draft: false
                   prerelease: false
